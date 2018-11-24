@@ -29,5 +29,5 @@ find_package(Qt5Widgets REQUIRED)
 add_executable(${PROJECT_NAME} ${OS_BUNDLE}
     ${SOURCE_FILES} ${META_FILES_TO_INCLUDE} ${RESOURCE_FILES}
 )
-
+#
 qt5_use_modules(${PROJECT_NAME} Widgets)
