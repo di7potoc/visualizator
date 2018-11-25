@@ -16,7 +16,7 @@ GObject::GObject(const QString &name,QObject *parent):QObject(parent)
 
 GObject::~GObject()
 {
-    if(effect !=nullptr)delete effect;
+
 }
 
 QString GObject::GetNameItem()
@@ -28,7 +28,8 @@ void GObject::setEffect(GEffect *effectNew)
 {
     if(effectNew != nullptr)
     {
-        effect = effectNew;
-        bool success = connect(this,&GObject::signal_enableEffect,effect,&GEffect::slot_setEnableEffect);
+        effect = std::unique_ptr<GEffect>(effectNew);
+        bool success = connect(this,&GObject::signal_enableEffect,effect.get(),&GEffect::slot_setEnableEffect);
+        Q_ASSERT(success);
     }
 }

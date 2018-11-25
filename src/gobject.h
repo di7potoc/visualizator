@@ -3,6 +3,7 @@
 #include <QGraphicsItem>
 #include <QObject>
 #include <QPen>
+#include <memory>
 
 class GEffect;
 
@@ -18,7 +19,7 @@ protected:
     QString name;
     static unsigned int object_counter;
     int width;
-    GEffect *effect;
+    std::unique_ptr<GEffect> effect;
     QPen penDef;
 signals:
     void signal_enableEffect(bool);
