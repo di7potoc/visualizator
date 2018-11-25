@@ -32,22 +32,21 @@ GraphicsItemListModel::~GraphicsItemListModel()
 void GraphicsItemListModel::slot_CreateNewItem(int indexTypeItem)
 {
     GObject *newitem = nullptr;
-    GEffect *neweffect = nullptr;
-
+    std::unique_ptr<GEffect> neweffect = nullptr;
     if(indexTypeItem == GObjectType::TRIANGLE)
     {
         newitem = new (std::nothrow) GTrianleItem(QString("triangle"));
-        neweffect = new (std::nothrow) GSizeEffect(1.5);
+        neweffect = std::make_unique<GSizeEffect>(1.5);
     }
     if(indexTypeItem == GObjectType::SQUARE)
     {
         newitem =new (std::nothrow) GSquareItem(QString("square"));
-        neweffect = new (std::nothrow) GThickPenEffect(3);
+        neweffect = std::make_unique<GThickPenEffect>(3);
     }
     if(indexTypeItem == GObjectType::CIRCLE)
     {
         newitem = new (std::nothrow) GCircleItem(QString("circle"));
-        neweffect = new (std::nothrow) GColorPenEffect(Qt::red);
+        neweffect = std::make_unique<GColorPenEffect>(Qt::red);
     }
 
     auto rowcount = GraphItemListModel->rowCount();
@@ -56,7 +55,8 @@ void GraphicsItemListModel::slot_CreateNewItem(int indexTypeItem)
     QModelIndex index = GraphItemListModel->index(rowcount-1);
     if(newitem != nullptr)
     {
-        newitem->setEffect(neweffect);
+        if(neweffect)
+            newitem->setEffect(std::move(neweffect));
         listItem->append(newitem);
         GraphItemListModel->setData(index,newitem->GetNameItem());
         ModelScene->addItem(newitem);

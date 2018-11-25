@@ -13,7 +13,7 @@ class GObject:public QObject, public QGraphicsItem
 public:
     explicit GObject(const QString &name,QObject *parent = nullptr);
     QString GetNameItem();
-    void setEffect(GEffect*);
+    void setEffect(std::unique_ptr<GEffect>&&);
     virtual ~GObject();
 protected:
     QString name;

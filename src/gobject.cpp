@@ -24,11 +24,11 @@ QString GObject::GetNameItem()
     return name;
 }
 
-void GObject::setEffect(GEffect *effectNew)
+void GObject::setEffect(/*GEffect *effectNew*/std::unique_ptr<GEffect>&& uptrEffect)
 {
-    if(effectNew != nullptr)
+    if(uptrEffect != nullptr)
     {
-        effect = std::unique_ptr<GEffect>(effectNew);
+        effect = std::move(uptrEffect);
         bool success = connect(this,&GObject::signal_enableEffect,effect.get(),&GEffect::slot_setEnableEffect);
         Q_ASSERT(success);
     }
